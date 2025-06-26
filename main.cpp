@@ -70,6 +70,7 @@ void printVideoInfo(const std::string& filename) {
 
     if (avformat_open_input(&pFormatContext, filename.c_str(), nullptr, nullptr) != 0) {
         std::cerr << "Error while opening file\n";
+        avformat_free_context(pFormatContext);
 
         return;
     }
@@ -89,6 +90,8 @@ void printVideoInfo(const std::string& filename) {
         AVStream* stream = pFormatContext->streams[i];
         printVideoStreamInfo(stream, i);
     }
+
+    avformat_close_input(&pFormatContext);
 }
 
 int main(int argc, char* argv[]) {
